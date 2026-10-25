@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChefDesk | My Rewards</title>
+  <link rel="stylesheet" href="../shared/customer.css">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --page: #fffaf6;
+      --surface: #ffffff;
+      --ink: #252d27;
+      --muted: #68736b;
+      --border: #ece3dc;
+      --accent: #c85b35;
+      --accent-soft: #fff2e9;
+    }
+
+    body {
+      margin: 0;
+      background: var(--page);
+      color: var(--ink);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    header {
+      position: sticky;
+      z-index: 5;
+      top: 0;
+      width: 100%;
+      max-width: none;
+      min-height: 65px;
+      padding: 10px max(24px, calc((100% - 1040px) / 2));
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+    }
+
+    header .brand {
+      font-size: 17px;
+      font-weight: 750;
+      letter-spacing: -0.5px;
+    }
+
+    header .brand,
+    header .back-link {
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    header .brand span {
+      color: var(--accent);
+    }
+
+    header .back-link {
+      min-height: 40px;
+      padding: 0 14px;
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: #fff;
+      font-size: 13px;
+    }
+
+    header .back-link strong {
+      margin-left: 4px;
+      font-weight: 750;
+    }
+
+    header .back-link:hover {
+      border-color: #e7b8a4;
+      background: #fff4ed;
+      color: var(--accent);
+    }
+
+    main {
+      width: min(100% - 40px, 960px);
+      margin: auto;
+      padding: 44px 0 72px;
+    }
+
+    h1,
+    .section-title {
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(36px, 5vw, 48px);
+      letter-spacing: -1.5px;
+      line-height: 1.12;
+    }
+
+    .page-kicker {
+      margin: 0 0 11px;
+      color: var(--accent);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1.8px;
+    }
+
+    .subtitle {
+      max-width: 560px;
+      margin: 11px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .account-card {
+      margin: 28px 0 34px;
+      padding: 24px 27px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 8px 20px;
+      border: 1px solid #ead8c9;
+      border-radius: 20px;
+      background: linear-gradient(115deg, #fff3e8, #fffaf4 72%);
+      box-shadow: 0 12px 30px rgba(83, 56, 39, 0.055);
+    }
+
+    .account-card p {
+      grid-column: 1;
+      margin: 0 0 4px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 750;
+      letter-spacing: 1.3px;
+    }
+
+    .account-card h2 {
+      grid-column: 1;
+      margin: 0;
+      font-size: 19px;
+      letter-spacing: -0.35px;
+      overflow-wrap: anywhere;
+    }
+
+    .logout {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      min-height: 40px;
+      padding: 0 14px;
+      border: 1px solid #e4cbb8;
+      border-radius: 10px;
+      background: #fff;
+      color: #89452b;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 160ms ease, border-color 160ms ease;
+    }
+
+    .logout:hover:not(:disabled) {
+      border-color: #dba78c;
+      background: #fff4ed;
+    }
+
+    .logout:disabled {
+      opacity: 0.5;
+    }
+
+    .sync-status {
+      grid-column: 1 / -1;
+      min-height: 18px;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .section-title {
+      margin: 34px 0 15px;
+      font-size: clamp(22px, 3vw, 26px);
+      letter-spacing: -0.6px;
+    }
+
+    .wallet-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .wallet-card,
+    .progress-section,
+    .collection-card,
+    .reward-card {
+      min-width: 0;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--surface);
+      box-shadow: 0 8px 22px rgba(83, 56, 39, 0.035);
+    }
+
+    .collection-card {
+      padding: 21px;
+    }
+
+    .wallet-card {
+      position: relative;
+      min-height: 150px;
+      padding: 21px;
+    }
+
+    .wallet-card.highlight {
+      border-color: #ead8c9;
+      background: #fff5ed;
+    }
+
+    .wallet-card:not(.highlight) {
+      background: #f5f8f2;
+      border-color: #dfe9dc;
+    }
+
+    .wallet-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 750;
+      line-height: 1.5;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .wallet-card strong {
+      display: block;
+      margin: 13px 0 5px;
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 35px;
+      line-height: 1;
+    }
+
+    .wallet-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.55;
+    }
+
+    .notice {
+      margin-top: 14px;
+      padding: 13px 15px;
+      border: 1px solid #f0ddce;
+      border-radius: 12px;
+      background: var(--accent-soft);
+      color: #80472f;
+      font-size: 11px;
+      line-height: 1.7;
+    }
+
+    .progress-section {
+      margin-top: 14px;
+      padding: 20px 21px;
+    }
+
+    .progress-heading {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--ink);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .progress-track {
+      height: 8px;
+      margin-top: 12px;
+      border-radius: 20px;
+      overflow: hidden;
+      background: #f0e8df;
+    }
+
+    .progress-fill {
+      width: 0;
+      height: 100%;
+      border-radius: 20px;
+      background: linear-gradient(90deg, #d77b47, #e6ac55);
+      transition: width 0.3s ease;
+    }
+
+    .progress-note {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.7;
+    }
+
+    .collection-stats {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 18px;
+    }
+
+    .collection-stats strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 27px;
+    }
+
+    .collection-stats span {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .collection-link {
+      min-height: 42px;
+      margin-top: 16px;
+      padding: 0 14px;
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid #ead8c9;
+      border-radius: 10px;
+      background: #fff5ed;
+      color: #984b2c;
+      font-size: 12px;
+      font-weight: 750;
+      text-decoration: none;
+      transition: background 160ms ease, border-color 160ms ease;
+    }
+
+    .collection-link:hover {
+      border-color: #dba78c;
+      background: #ffeadc;
+    }
+
+    .reward-card {
+      position: relative;
+      min-width: 0;
+      margin: 0;
+      padding: 20px 20px 18px 66px;
+    }
+
+    #rewards-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 13px;
+    }
+
+    .reward-card h3 {
+      margin: 10px 0;
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 19px;
+      line-height: 1.3;
+      overflow-wrap: anywhere;
+    }
+
+    .reward-card p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .reward-tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: #984b2c;
+      font-size: 10px;
+      font-weight: 750;
+    }
+
+    .empty {
+      grid-column: 1 / -1;
+      padding: 34px 22px;
+      border: 1px dashed #e2cdbc;
+      border-radius: 16px;
+      background: #fff8f2;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.7;
+    }
+
+    .reward-card::before {
+      content: "🎁";
+      position: absolute;
+      top: 20px;
+      left: 19px;
+      width: 35px;
+      height: 35px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      background: #fff1e5;
+      font-size: 18px;
+    }
+
+    button:focus-visible,
+    a:focus-visible {
+      outline: 3px solid rgba(200, 91, 53, 0.65);
+      outline-offset: 3px;
+    }
+
+    @media (max-width: 640px) {
+      header {
+        min-height: 60px;
+        padding-inline: 16px;
+      }
+
+      main {
+        width: min(100% - 32px, 480px);
+        padding-top: 32px;
+      }
+
+      .account-card {
+        padding: 19px;
+      }
+
+      .wallet-card {
+        min-height: 135px;
+        padding: 17px;
+      }
+
+      .wallet-card strong {
+        font-size: 30px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .wallet-grid,
+      #rewards-list {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 35px;
+      }
+
+      .account-card {
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 8px 10px;
+      }
+
+      .logout {
+        padding-inline: 10px;
+        font-size: 11px;
+      }
+
+      .collection-card {
+        padding: 17px;
+      }
+
+      .collection-stats {
+        gap: 10px;
+      }
+
+      .collection-stats strong {
+        font-size: 22px;
+      }
+
+      .collection-stats span {
+        font-size: 10px;
+      }
+
+      .reward-card {
+        padding-right: 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <a href="../Dashboard/index.html" class="brand">
+      ChefDesk<span>.</span>
+    </a>
+
+    <a href="../Dashboard/index.html" class="back-link">
+      ← <strong>Games</strong>
+    </a>
+  </header>
+
+  <main>
+    <p class="page-kicker">YOUR CHEFDESK WALLET</p>
+
+    <h1>My Rewards</h1>
+
+    <p class="subtitle">
+      Your games, points, coupons and food collections in one place.
+    </p>
+
+    <div class="account-card">
+      <p>YOUR CHEFDESK ACCOUNT</p>
+      <h2 id="customer-number">Loading...</h2>
+
+      <button class="logout" id="logout-btn">
+        Sign out
+      </button>
+
+      <div class="sync-status" id="sync-status" role="status">
+        Checking Firebase connection...
+      </div>
+    </div>
+
+    <h2 class="section-title">My Loyalty Wallet</h2>
+
+    <div class="wallet-grid">
+      <div class="wallet-card highlight">
+        <span>Demo Loyalty Points</span>
+        <strong id="wallet-points">0</strong>
+        <p>Local only · Not redeemable</p>
+      </div>
+
+      <div class="wallet-card">
+        <span>Total Game Points</span>
+        <strong id="game-points">0</strong>
+        <p id="game-points-note">Connecting to cloud...</p>
+      </div>
+    </div>
+
+    <div class="progress-section">
+      <div class="progress-heading">
+        <span>Today's Demo Loyalty Earnings</span>
+        <span id="daily-points">0 / 100</span>
+      </div>
+
+      <div class="progress-track">
+        <div class="progress-fill" id="daily-progress"></div>
+      </div>
+
+      <p class="progress-note" id="daily-note">
+        Checking today's earnings...
+      </p>
+    </div>
+
+    <h2 class="section-title">My Food Collection</h2>
+
+    <div class="collection-card">
+      <div class="collection-stats">
+        <div>
+          <strong id="collection-count">0 / 12</strong>
+          <span>Food Items Collected</span>
+        </div>
+
+        <div>
+          <strong id="collection-points">0</strong>
+          <span>Collection Points</span>
+        </div>
+      </div>
+
+      <div class="progress-track">
+        <div class="progress-fill" id="collection-progress"></div>
+      </div>
+
+      <a
+        href="../Collect & Win/index.html"
+        class="collection-link"
+      >
+        Continue Collect &amp; Win →
+      </a>
+    </div>
+
+    <h2 class="section-title">My Coupons</h2>
+
+    <div id="rewards-list"></div>
+  </main>
+
+  <script src="../shared/customer.js"></script>
+  <script src="../shared/loyalty.js"></script>
+
+  <script>
+    const customerNumber = document.getElementById("customer-number");
+    const rewardsList = document.getElementById("rewards-list");
+    const syncStatus = document.getElementById("sync-status");
+    const logoutButton = document.getElementById("logout-btn");
+
+    function renderAccount() {
+      const customer = ChefDesk.getCustomer();
+
+      customerNumber.textContent =
+        customer?.verified
+          ? customer.displayPhone
+          : "Not signed in";
+    }
+
+    function renderLoyalty() {
+      const wallet = ChefDeskLoyalty.getWallet();
+      const local = ChefDeskLoyalty.getLocalWallet();
+      const status = ChefDeskLoyalty.getSyncStatus();
+      const today = ChefDeskLoyalty.getTodayPoints(local);
+      const limit = ChefDeskLoyalty.DAILY_LIMIT;
+
+      document.getElementById("wallet-points").textContent =
+        local.totalPoints;
+
+      document.getElementById("game-points").textContent =
+        status.connected
+          ? wallet.gamePoints
+          : "—";
+
+      document.getElementById("game-points-note").textContent =
+        status.connected
+          ? "Synced demo Game Points"
+          : "Cloud Game Points not loaded";
+
+      document.getElementById("daily-points").textContent =
+        `${today} / ${limit}`;
+
+      document.getElementById("daily-progress").style.width =
+        `${Math.min(100, (today / limit) * 100)}%`;
+
+      document.getElementById("daily-note").textContent =
+        today >= limit
+          ? "Today's local demo earning limit reached."
+          : `${limit - today} more local demo loyalty points available today.`;
+
+      if (status.connected) {
+        syncStatus.textContent =
+          "✓ Firebase Game Points synced successfully";
+      } else if (status.error) {
+        syncStatus.textContent =
+          "Cloud sync failed: " + status.error;
+      }
+    }
+
+    function renderCollection() {
+      const customer = ChefDesk.getCustomer();
+
+      let collected = [];
+
+      if (customer?.verified) {
+        try {
+          const customers = JSON.parse(
+            localStorage.getItem("chefdesk_collect_win_v2") || "{}"
+          );
+
+          const saved = customers[customer.phone];
+
+          collected = saved && Array.isArray(saved.collected)
+            ? [...new Set(saved.collected)]
+            : [];
+        } catch (error) {
+          console.error("Collection loading error:", error);
+        }
+      }
+
+      const count = Math.min(collected.length, 12);
+
+      const groups = [
+        ["burger", "pizza", "fries", "hotdog"],
+        ["icecream", "donut", "cake", "cookie"],
+        ["apple", "banana", "strawberry", "watermelon"]
+      ];
+
+      const completed = groups.filter(group =>
+        group.every(item => collected.includes(item))
+      ).length;
+
+      const points = count * 10 + completed * 100;
+
+      document.getElementById("collection-count").textContent =
+        `${count} / 12`;
+
+      document.getElementById("collection-points").textContent =
+        points;
+
+      document.getElementById("collection-progress").style.width =
+        `${Math.round((count / 12) * 100)}%`;
+    }
+
+    function renderRewards() {
+      rewardsList.replaceChildren();
+
+      const customer = ChefDesk.getCustomer();
+
+      if (!customer?.verified) {
+        return;
+      }
+
+      const rewards = ChefDesk.getRewards();
+
+      if (!rewards.length) {
+        const empty = document.createElement("div");
+
+        empty.className = "empty";
+        empty.textContent =
+          "🎟️ No demo coupons yet! Play ChefDesk games to collect rewards.";
+
+        rewardsList.appendChild(empty);
+        return;
+      }
+
+      [...rewards].reverse().forEach(reward => {
+        const card = document.createElement("div");
+        card.className = "reward-card";
+
+        const tag = document.createElement("span");
+        tag.className = "reward-tag";
+        tag.textContent = "Demo only";
+
+        const title = document.createElement("h3");
+        title.textContent = reward.prize || "ChefDesk Reward";
+
+        const game = document.createElement("p");
+        game.textContent =
+          "Won from: " + (reward.game || "ChefDesk");
+
+        const date = document.createElement("p");
+        const parsed = new Date(reward.createdAt);
+
+        date.textContent = Number.isNaN(parsed.getTime())
+          ? ""
+          : parsed.toLocaleString();
+
+        card.append(tag, title, game, date);
+        rewardsList.appendChild(card);
+      });
+    }
+
+    function renderAll() {
+      renderAccount();
+      renderLoyalty();
+      renderCollection();
+      renderRewards();
+    }
+
+    async function connectCurrentWallet() {
+      syncStatus.textContent =
+        "Connecting to Firebase Game Points...";
+
+      const connected = await ChefDeskLoyalty.connectWallet();
+
+      if (!connected) {
+        const status = ChefDeskLoyalty.getSyncStatus();
+
+        syncStatus.textContent = status.error
+          ? "Cloud sync failed: " + status.error
+          : "Unable to connect to cloud wallet.";
+      }
+
+      renderAll();
+    }
+
+    async function initialize() {
+      try {
+        syncStatus.textContent = "Verifying your account...";
+
+        await ChefDesk.requireLogin();
+
+        renderAll();
+
+        await connectCurrentWallet();
+      } catch (error) {
+        console.error("ChefDesk initialization error:", error);
+
+        syncStatus.textContent =
+          "Unable to initialize. Refresh and try again.";
+      }
+    }
+
+    logoutButton.addEventListener("click", async () => {
+      logoutButton.disabled = true;
+
+      try {
+        ChefDeskLoyalty.disconnectWallet();
+
+        await ChefDesk.logout();
+
+        syncStatus.textContent = "Waiting for sign-in...";
+
+        await ChefDesk.requireLogin();
+
+        renderAll();
+
+        await connectCurrentWallet();
+      } catch (error) {
+        console.error("Account change error:", error);
+
+        syncStatus.textContent =
+          "Unable to switch account. Please refresh.";
+      } finally {
+        logoutButton.disabled = false;
+      }
+    });
+
+    window.addEventListener(
+      "chefdesk:points-updated",
+      renderLoyalty
+    );
+
+    window.addEventListener(
+      "chefdesk:customer-updated",
+      renderAll
+    );
+
+    window.addEventListener("pageshow", () => {
+      renderAll();
+    });
+
+    initialize();
+  </script>
+</body>
+</html>

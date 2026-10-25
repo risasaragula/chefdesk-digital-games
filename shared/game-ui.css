@@ -1,0 +1,390 @@
+
+:root {
+  --cream: #fffaf6;
+  --white: #ffffff;
+  --paper: #ffffff;
+  --green: #252d27;
+  --dark-green: #34453a;
+  --deep: #34453a;
+  --orange: #c85b35;
+  --muted: #68736b;
+  --muted-green: #68736b;
+  --border: #ece3dc;
+  --light-green: #f5f1eb;
+}
+
+body {
+  background: var(--cream);
+  color: var(--green);
+}
+
+.site-header,
+.header,
+.topbar {
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid var(--border);
+}
+
+.brand,
+.logo {
+  color: var(--green);
+}
+
+.back-link,
+.dashboard-link {
+  min-height: 40px;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--green);
+  transition: border-color 160ms ease,
+              color 160ms ease,
+              background 160ms ease;
+}
+
+.back-link:hover,
+.dashboard-link:hover {
+  border-color: #e7b8a4;
+  background: #fff4ed;
+  color: var(--orange);
+}
+
+.page-heading,
+.hero {
+  color: var(--green);
+}
+
+.eyebrow,
+.step-label,
+.section-label,
+.step {
+  color: var(--orange);
+}
+
+.game-panel,
+.content-card,
+.panel,
+.checkin-card,
+.result-card,
+.quiz-card,
+.visit-section,
+.discovery-area,
+.collection-group,
+.rewards-panel {
+  border-color: var(--border);
+  border-radius: 22px;
+  background: var(--white);
+  box-shadow: 0 16px 42px rgba(83, 56, 39, 0.07);
+}
+
+.stat,
+.stat-card,
+.stat-box {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #fff7ef;
+  color: var(--green);
+}
+
+.stat span,
+.stat-card span,
+.stat-box span {
+  color: var(--muted);
+}
+
+.stat-box.timer-box {
+  border-color: #efc5a2;
+  background: #fff0df;
+  color: #8f4529;
+}
+
+button.primary-button,
+button.primary-btn,
+a.primary-btn,
+button.primary-button.full-width,
+.spin-button {
+  border-color: var(--orange);
+  background: var(--orange);
+  color: #fff;
+  transition: transform 160ms ease,
+              background 160ms ease,
+              box-shadow 160ms ease;
+}
+
+button.primary-button:hover:not(:disabled),
+button.primary-btn:hover:not(:disabled),
+a.primary-btn:hover,
+.spin-button:hover:not(:disabled) {
+  background: #b94e2d;
+  box-shadow: 0 5px 14px rgba(200, 91, 53, 0.2);
+  transform: translateY(-1px);
+}
+
+button.secondary-button,
+a.secondary-button,
+.small-button,
+.tool-button,
+.reveal-btn {
+  border-color: var(--border);
+  background: #fff;
+  color: var(--green);
+  transition: border-color 160ms ease,
+              background 160ms ease,
+              transform 160ms ease;
+}
+
+button.secondary-button:hover:not(:disabled),
+a.secondary-button:hover,
+.small-button:hover,
+.tool-button:hover,
+.reveal-btn:hover {
+  border-color: #e7b8a4;
+  background: #fff4ed;
+  transform: translateY(-1px);
+}
+
+input,
+select,
+textarea,
+.text-input {
+  border-color: #e5ddd5;
+  border-radius: 11px;
+  background: #fff;
+  color: var(--green);
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+.text-input:focus {
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(200, 91, 53, 0.12);
+  outline: none;
+}
+
+.mode-card,
+.difficulty-card,
+.player,
+.player-card,
+.room-info,
+.room-code-box,
+.completion,
+.completion-panel,
+.next-visit-note {
+  border-color: var(--border);
+  background: #f8f4ee;
+}
+
+.mode-card:hover,
+.difficulty-card:hover {
+  border-color: #e5b59f;
+  background: #fff3eb;
+}
+
+.board-container,
+.canvas-wrap,
+.scratch-card {
+  border-color: #e4d8cc;
+  box-shadow: 0 10px 26px rgba(83, 56, 39, 0.09);
+}
+
+.board-container {
+  background: #f5eee6;
+}
+
+.sudoku-board {
+  border-color: #667c6c;
+  background: #667c6c;
+}
+
+.sudoku-board .cell {
+  background: #fffdfa;
+  color: #34453a;
+}
+
+.sudoku-board .cell.given {
+  background: #f5f1eb;
+}
+
+.sudoku-board .cell.peer,
+.sudoku-board .cell.same-value:not(.selected) {
+  background: #f1f6ef;
+}
+
+.sudoku-board .cell.selected {
+  background: #fff0df;
+  outline-color: var(--orange);
+}
+
+.sudoku-board .cell.invalid {
+  background: #fcebe5;
+  color: #a94432;
+}
+
+.number-pad button {
+  border-color: var(--border);
+  background: #fff8f1;
+  color: var(--green);
+}
+
+.number-pad button:hover {
+  background: #ffeadc;
+}
+
+.board .cell {
+  border-color: #eadfd7;
+  background: #fff7f1;
+  color: #527aa9;
+}
+
+.board .cell.o {
+  color: var(--orange);
+}
+
+.board .cell.win {
+  border-color: #b9d3b7;
+  background: #edf5e9;
+}
+
+.quiz-card {
+  border-radius: 22px;
+}
+
+.option-button {
+  border-color: var(--border);
+  background: #fffdfa;
+  color: var(--green);
+}
+
+.option-button:hover:not(:disabled) {
+  border-color: #e3ae94;
+  background: #fff5ee;
+}
+
+.option-letter,
+.question-category {
+  border-color: #f0dfd1;
+  background: #fff2e7;
+  color: #944b31;
+}
+
+.progress-track {
+  background: #f0e8df;
+}
+
+.progress-fill {
+  background: linear-gradient(90deg, #d77b47, #e6ac55);
+}
+
+.memory-card {
+  border-color: #e9ddd3;
+  background: #f6f1eb;
+}
+
+.memory-card:not(:disabled):hover {
+  background: #f0e7dd;
+}
+
+.memory-card.flipped {
+  border-color: #dfa284;
+  background: #fff8f2;
+}
+
+.memory-card.matched {
+  border-color: #b7d3b8;
+  background: #edf5eb;
+}
+
+.memory-card.bonus {
+  border-color: #e7bd79;
+  background: #fff4de;
+  color: #8f6124;
+}
+
+.mystery-card {
+  border-color: #ead2bd;
+  background: #fffaf4;
+}
+
+.mystery-card.revealed {
+  border-color: #d77b47;
+}
+
+.food-item {
+  border-color: var(--border);
+  background: #fffdfa;
+}
+
+.food-item.collected-item {
+  border-color: #c6d8bd;
+  background: #f1f6ed;
+}
+
+.canvas-wrap {
+  background: #fff;
+}
+
+.canvas-overlay {
+  background: rgba(255, 250, 246, 0.88);
+}
+
+.guess-message {
+  background: #f7f2ed;
+}
+
+.guess-message.correct {
+  background: #edf5eb;
+}
+
+.guess-form button {
+  background: var(--orange);
+}
+
+.color-dot.active {
+  box-shadow: 0 0 0 2px var(--orange);
+}
+
+.site-footer,
+.footer {
+  color: var(--muted);
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+canvas:focus-visible {
+  outline: 3px solid rgba(200, 91, 53, 0.65);
+  outline-offset: 3px;
+}
+
+@media (max-width: 600px) {
+  .game-panel,
+  .content-card,
+  .panel,
+  .checkin-card,
+  .result-card,
+  .quiz-card {
+    border-radius: 18px;
+  }
+
+  .back-link,
+  .dashboard-link {
+    min-height: 38px;
+    padding-inline: 11px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
