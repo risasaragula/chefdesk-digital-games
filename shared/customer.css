@@ -199,3 +199,289 @@ background:#b74c2c!important;
 .cd-login-box .cd-phone-field span{
 color:#252d27!important;
 }
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap');
+:root{
+--cd-orange:#e94f1b;
+--cd-orange-hover:#ca3e10;
+--cd-cream:#fffaf4;
+--cd-dark:#18382e;
+--cd-muted:#788079;
+--cd-border:#efddca;
+}
+.cd-login-overlay{
+background:rgba(29,33,29,.65);
+backdrop-filter:blur(7px);
+-webkit-backdrop-filter:blur(7px);
+padding:16px;
+}
+.cd-login-box{
+width:100%;
+max-width:430px;
+max-height:calc(100dvh - 32px);
+padding:38px 28px 28px;
+background:linear-gradient(145deg,#fffefa,#fff5e9);
+border:1px solid #fff;
+border-radius:26px;
+box-shadow:0 25px 80px rgba(30,25,15,.27);
+font-family:'DM Sans',Arial,sans-serif;
+color:var(--cd-dark);
+}
+.cd-login-icon{
+width:70px;
+height:70px;
+display:grid;
+place-items:center;
+margin:5px auto 19px;
+background:#ffeadb;
+border-radius:50%;
+font-size:34px;
+}
+.cd-login-box h2{
+font-family:'Playfair Display',Georgia,serif;
+font-size:clamp(27px,5vw,34px);
+font-weight:800;
+color:#18382e!important;
+letter-spacing:-.7px;
+margin-bottom:13px;
+}
+.cd-login-box p{
+color:#777e76;
+font-size:13px;
+line-height:1.7;
+}
+.cd-phone-field{
+min-height:53px;
+background:#fff;
+border:1px solid #ead9c8;
+border-radius:13px;
+padding:0 15px;
+margin-top:20px;
+}
+.cd-phone-field:focus-within{
+border-color:#e94f1b;
+box-shadow:0 0 0 3px rgba(233,79,27,.12);
+}
+.cd-phone-field span{
+color:#18382e!important;
+font-weight:800;
+}
+.cd-phone-field input{
+font-family:'DM Sans',Arial,sans-serif;
+font-size:15px;
+color:#18382e;
+}
+.cd-login-box button:not([aria-label="Close"]):not(.cd-login-close):not(.cd-close):not(.cd-close-btn){
+background:linear-gradient(135deg,#fa7138,#df4617)!important;
+color:#fff!important;
+border:0;
+border-radius:13px;
+min-height:49px;
+font-weight:800;
+box-shadow:0 6px 15px rgba(233,79,27,.18);
+}
+.cd-login-box button:not([aria-label="Close"]):not(.cd-login-close):not(.cd-close):not(.cd-close-btn):hover{
+background:#c83e12!important;
+}
+.cd-login-box .cd-login-close,.cd-login-box .cd-close,.cd-login-box .cd-close-btn,.cd-login-box button[aria-label="Close"],.cd-login-box button[aria-label="Close login"]{
+background:#ffeadb;
+color:#ba491e;
+width:35px;
+height:35px;
+border-radius:50%;
+}
+.cd-login-box .cd-login-error{
+color:#c23524;
+font-weight:600;
+}
+.cd-login-box .cd-demo-note{
+color:#929087;
+font-size:11px;
+}
+@media(max-width:600px){
+.cd-login-overlay{
+padding:12px;
+align-items:center;
+}
+.cd-login-box{
+max-width:390px;
+max-height:calc(100dvh - 24px);
+padding:30px 19px 23px;
+border-radius:21px;
+}
+.cd-login-icon{
+width:58px;
+height:58px;
+font-size:29px;
+margin-bottom:12px;
+}
+.cd-login-box h2{
+font-size:27px;
+}
+.cd-phone-field{
+min-height:48px;
+}
+}
+@media(max-width:360px){
+.cd-login-box{
+padding:25px 14px 18px;
+}
+.cd-login-box h2{
+font-size:24px;
+}
+}
+
+.cd-login-overlay{
+background:rgba(35,26,20,.65)!important;
+backdrop-filter:blur(8px);
+-webkit-backdrop-filter:blur(8px);
+padding:14px!important;
+}
+.cd-login-box{
+width:100%!important;
+max-width:420px!important;
+max-height:calc(100dvh - 28px)!important;
+padding:32px 24px 26px!important;
+background:linear-gradient(145deg,#fffefa,#fff1e5)!important;
+border:1px solid #f1dac7!important;
+border-radius:24px!important;
+box-shadow:0 25px 65px rgba(60,30,10,.3)!important;
+color:#193a30!important;
+font-family:'DM Sans',Arial,sans-serif!important;
+}
+.cd-login-icon{
+font-size:38px!important;
+margin:8px 0 15px!important;
+}
+.cd-login-box h2{
+color:#193a30!important;
+font-family:'Playfair Display',Georgia,serif!important;
+font-size:clamp(26px,5vw,32px)!important;
+}
+.cd-login-description,.cd-login-info{
+color:#77766e!important;
+font-size:13px!important;
+line-height:1.7!important;
+}
+.cd-phone-field{
+background:#fff!important;
+border:1px solid #e8ccba!important;
+border-radius:13px!important;
+min-height:52px!important;
+}
+.cd-phone-field:focus-within{
+border-color:#ed5721!important;
+box-shadow:0 0 0 3px rgba(237,87,33,.12)!important;
+}
+.cd-phone-prefix{
+color:#b84d23!important;
+}
+.cd-phone-field input{
+color:#26352e!important;
+font-size:15px!important;
+}
+.cd-login-box button.cd-primary{
+background:linear-gradient(135deg,#f77737,#df4614)!important;
+color:#fff!important;
+border:0!important;
+border-radius:12px!important;
+min-height:50px!important;
+font-weight:800!important;
+box-shadow:0 6px 15px rgba(226,80,25,.2)!important;
+}
+.cd-login-box button.cd-primary:hover:not(:disabled){
+background:#c94112!important;
+}
+.cd-login-box .cd-login-close{
+position:absolute!important;
+top:12px!important;
+right:12px!important;
+background:#ffe6d7!important;
+color:#c64d22!important;
+border:0!important;
+border-radius:50%!important;
+width:35px!important;
+height:35px!important;
+box-shadow:none!important;
+}
+.cd-back-btn{
+background:transparent!important;
+color:#ce5528!important;
+box-shadow:none!important;
+}
+.cd-login-error{
+color:#bd3422!important;
+}
+.cd-demo-note{
+color:#999087!important;
+font-size:11px!important;
+}
+@media(max-width:480px){
+.cd-login-box{
+max-width:390px!important;
+padding:28px 18px 22px!important;
+border-radius:20px!important;
+}
+.cd-login-box h2{
+font-size:27px!important;
+}
+.cd-login-description{
+font-size:12px!important;
+}
+}
+@media(max-height:600px){
+.cd-login-box{
+padding-top:20px!important;
+padding-bottom:18px!important;
+}
+.cd-login-icon{
+margin:3px 0 8px!important;
+}
+}
+#cd-recaptcha{
+display:flex!important;
+justify-content:center;
+align-items:center;
+width:100%;
+min-height:78px;
+visibility:visible!important;
+opacity:1!important;
+pointer-events:auto!important;
+margin:15px auto;
+}
+#cd-recaptcha iframe{
+visibility:visible!important;
+opacity:1!important;
+pointer-events:auto!important;
+max-width:100%;
+}
+@media(max-width:480px){
+#cd-recaptcha{
+min-height:78px;
+margin:12px auto;
+}
+}
+
+#cd-recaptcha{
+width:100%;
+max-width:304px;
+min-height:78px;
+margin:16px auto;
+display:flex;
+justify-content:center;
+}
+.cd-login-box{
+width:min(100%,420px);
+overflow-x:hidden;
+}
+@media(max-width:380px){
+.cd-login-box{
+padding-left:12px!important;
+padding-right:12px!important;
+}
+#cd-recaptcha{
+width:304px;
+max-width:100%;
+margin:14px auto;
+}
+}

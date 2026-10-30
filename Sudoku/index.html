@@ -1,87 +1,59 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sudoku | ChefDesk</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="../shared/game-ui.css">
-  <script src="../shared/customer.js"></script>
-  <script src="../shared/loyalty.js"></script>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sudoku | ChefDesk</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="site-header">
-    <div class="header-inner">
-      <a class="brand" href="../Dashboard/index.html">ChefDesk<span>.</span></a>
-      <a class="back-link" href="../Dashboard/index.html">← Dashboard</a>
-    </div>
-  </header>
-  <main class="page-container">
-    <div class="page-heading">
-      <p class="eyebrow">CHEFDESK DIGITAL GAMES</p>
-      <h1>Sudoku<span>.</span></h1>
-      <p class="subtitle">A moment to think. A challenge to enjoy.</p>
-    </div>
-
-    <section class="game-panel" aria-label="Sudoku game">
-      <div class="panel-intro">
-        <p class="section-label">THE NUMBER CHALLENGE</p>
-        <h2>Find your flow.</h2>
-        <p class="description">Fill every row, column and 3 × 3 box with the numbers 1 to 9, without repeating a number.</p>
-      </div>
-
-      <div class="toolbar">
-        <div class="difficulty-control">
-          <label for="difficulty">Difficulty</label>
-          <select id="difficulty">
-            <option value="easy">Easy</option>
-            <option value="medium" selected>Medium</option>
-            <option value="hard">Hard</option>
-          </select>
-        </div>
-        <button id="newGame" class="primary-button" type="button">New Game</button>
-      </div>
-
-      <div class="game-stats">
-        <div class="stat"><span>TIME</span><strong id="timer">00:00</strong></div>
-        <div class="stat"><span>MISTAKES</span><strong id="mistakes">0</strong></div>
-        <div class="stat"><span>HINTS LEFT</span><strong id="hintsLeft">3</strong></div>
-      </div>
-
-      <p id="status" class="status" role="status" aria-live="polite">Select a square to begin.</p>
-      <div id="sudokuBoard" class="sudoku-board" role="grid" aria-label="Sudoku puzzle"></div>
-
-      <div class="number-pad" aria-label="Number selection">
-        <button type="button" data-number="1">1</button>
-        <button type="button" data-number="2">2</button>
-        <button type="button" data-number="3">3</button>
-        <button type="button" data-number="4">4</button>
-        <button type="button" data-number="5">5</button>
-        <button type="button" data-number="6">6</button>
-        <button type="button" data-number="7">7</button>
-        <button type="button" data-number="8">8</button>
-        <button type="button" data-number="9">9</button>
-      </div>
-
-      <div class="game-actions">
-        <button id="notesToggle" class="secondary-button" type="button" aria-pressed="false">Notes: Off</button>
-        <button id="erase" class="secondary-button" type="button">Erase</button>
-        <button id="hint" class="secondary-button" type="button">Hint</button>
-        <button id="restart" class="secondary-button" type="button">Restart</button>
-      </div>
-
-      <div id="completion" class="completion hidden" aria-live="polite">
-        <p class="section-label">PUZZLE COMPLETE</p>
-        <h2>Beautifully solved.</h2>
-        <p id="completionText"></p>
-        <button id="playAgain" class="primary-button" type="button">Play Another Puzzle</button>
-      </div>
-      <p class="footnote">Unlimited gameplay. Restaurant rewards are separate and subject to eligibility.</p>
-    </section>
-  </main>
-
-  <footer class="site-footer">ChefDesk Digital Games</footer>
-  <script src="script.js" defer></script>
+<header class="navbar">
+<a href="../Dashboard/index.html" class="logo">Chef<span>Desk.</span></a>
+<a href="../Dashboard/index.html" class="back">← Dashboard</a>
+</header>
+<main class="page">
+<div class="decor basil">🌿</div>
+<div class="decor pepper">🧂</div>
+<div class="decor leaves">🍃</div>
+<div class="heading">
+<p>DAILY PUZZLE</p>
+<h1>Sudo<span>ku</span></h1>
+<div class="subtitle">Challenge your mind. One puzzle at a time.</div>
+</div>
+<section class="game">
+<div class="settings">
+<label>Difficulty
+<select id="difficulty">
+<option value="easy">Easy</option>
+<option value="medium" selected>Medium</option>
+<option value="hard">Hard</option>
+</select>
+</label>
+<button id="newGame" class="new-game">↻ New Game</button>
+</div>
+<div class="stats">
+<div class="stat"><span>◷</span><div><small>TIME</small><strong id="timer">00:00</strong></div></div>
+<div class="stat"><span>⚠</span><div><small>MISTAKES</small><strong id="mistakes">0</strong></div></div>
+<div class="stat"><span>♧</span><div><small>HINTS LEFT</small><strong id="hints">3</strong></div></div>
+</div>
+</section>
+<p class="message" id="message" role="status">Select a square to begin.</p>
+<div class="board" id="board" role="grid" aria-label="Sudoku puzzle"></div>
+<div class="keypad" id="keypad">
+<button data-number="1">1</button>
+<button data-number="2">2</button>
+<button data-number="3">3</button>
+<button data-number="4">4</button>
+<button data-number="5">5</button>
+<button data-number="6">6</button>
+<button data-number="7">7</button>
+<button data-number="8">8</button>
+<button data-number="9">9</button>
+<button id="erase">⌫ Erase</button>
+<button id="hint">💡 Hint</button>
+</div>
+</main>
+<script src="script.js"></script>
 </body>
 </html>

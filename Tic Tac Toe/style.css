@@ -561,3 +561,30 @@ h2 {
     min-height: 90px;
   }
 }
+
+body{
+background-image:url("assets/bg.png")!important;
+background-position:center center!important;
+background-size:cover!important;
+background-repeat:no-repeat!important;
+background-attachment:scroll!important;
+background-color:#fff8ef;
+}
+.game-page,.page-container,.game-container{
+background-image:url("assets/bg.png")!important;
+background-position:center center!important;
+background-size:cover!important;
+background-repeat:no-repeat!important;
+}
+@media(max-width:768px){
+body,.game-page,.page-container,.game-container{
+background-position:center top!important;
+background-size:cover!important;
+background-attachment:scroll!important;
+}
+}
+@media(max-width:400px){
+body,.game-page,.page-container,.game-container{
+background-position:48% top!important;
+}
+}

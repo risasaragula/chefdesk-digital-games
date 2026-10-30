@@ -1,76 +1,62 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Scratch & Win | ChefDesk</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="../shared/customer.css">
-  <link rel="stylesheet" href="../shared/game-ui.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#fff7ef">
+<title>Scratch & Win | ChefDesk</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../shared/customer.css">
 </head>
-
 <body>
-  <header class="header">
-    <a href="../Dashboard/index.html" class="logo">
-      <span class="logo-icon"></span>Chef<span>Desk</span><b>.</b>
-    </a>
-    <a href="../Dashboard/index.html" class="back-link">← Dashboard</a>
-  </header>
+<header class="navbar">
+<a href="../Dashboard/index.html" class="logo">ChefDesk<span>.</span></a>
+<a href="../Dashboard/index.html" class="back-btn">← Dashboard</a>
+</header>
+<main class="game-page">
+<div class="decoration left-food">🧁</div>
+<div class="decoration right-food">☕</div>
+<div class="leaf leaf-one">🌿</div>
+<div class="leaf leaf-two">🍃</div>
+<div class="confetti confetti-one">✦</div>
+<div class="confetti confetti-two">✦</div>
+<div class="game-heading">
+<h1>Scratch & <span>Win!</span></h1>
+<p>A delicious surprise is waiting underneath.</p>
+</div>
+<section class="scratch-card">
+<div class="gift-icon">🎁</div>
+<h2>Scratch to discover!</h2>
+<p class="instructions">Scratch the silver area with your finger or mouse.</p>
+<div class="scratch-frame">
+<div class="prize-content" id="prizeContent">
+<div class="prize-icon" id="prizeIcon">🎁</div>
+<p class="prize-small">YOU DISCOVERED</p>
+<h3 id="prizeName">Your Surprise</h3>
+<p id="prizeDescription">A delicious reward awaits!</p>
+</div>
+<canvas id="scratchCanvas" aria-label="Scratch the silver card to reveal your result"></canvas>
+</div>
+<div class="progress-row">
+<div class="progress-track">
+<div class="progress-fill" id="progressFill"></div>
+</div>
+<strong id="progressPercent">0%</strong>
+</div>
+<p class="scratch-progress" id="progressText">Scratched: 0%</p>
+<button class="reveal-link" id="revealBtn" type="button">Can't scratch? Reveal result</button>
+<div id="finishedActions" class="finished-actions" hidden>
+<p id="winMessage" role="status" aria-live="polite"></p>
+<button id="playAgainBtn" class="play-again" type="button">Play Again</button>
+</div>
+</section>
+<p class="game-disclaimer">Demo game • Rewards are for preview only</p>
+</main>
 
-  <main>
-    <h1>Scratch & <em>Win.</em></h1>
-    <p class="subtitle">A delicious surprise is waiting underneath.</p>
-    <section id="checkin-screen" class="panel">
-      <div class="big-icon">🎟️</div>
-      <h2>Unlock your scratch card</h2>
-      <p class="description">Enter your restaurant visit code to unlock one scratch card.</p>
-      <p class="account-line">Playing as <strong id="customer-phone"></strong></p>
-      <form id="checkin-form">
-        <label for="visit-code">Visit code</label>
-        <input
-          id="visit-code"
-          type="text"
-          maxlength="40"
-          placeholder="Example: BILL1001"
-          required
-        >
-        <button class="primary-btn" type="submit">Unlock My Card</button>
-      </form>
-      <p class="helper">One scratch card per visit code in this demo.</p>
-      <p id="checkin-error" class="error" role="alert"></p>
-    </section>
+<script src="../shared/customer.js"></script>
+<script src="../shared/claim-reward.js"></script>
+<script src="script.js"></script>
 
-    <section id="scratch-screen" class="panel" hidden>
-      <h2>Scratch to discover!</h2>
-      <p class="description">Scratch the silver area with your finger or mouse.</p>
-      <div class="scratch-card" id="scratch-card">
-        <div class="prize-underlay">
-          <div class="prize-emoji" id="hidden-emoji">🎁</div>
-          <div class="underlay-label">YOUR SURPRISE</div>
-          <div class="hidden-prize" id="hidden-prize"></div>
-        </div>
-
-        <canvas id="scratch-canvas" aria-label="Scratch to reveal your reward"></canvas>
-      </div>
-
-      <p class="scratch-progress" id="scratch-progress">Scratch the card to reveal your result</p>
-      <button id="reveal-button" class="reveal-btn" type="button">Can't scratch? Reveal result</button>
-    </section>
-
-    <section id="result-screen" class="panel" hidden>
-      <div class="big-icon" id="result-emoji">🎉</div>
-      <p class="step-label">YOUR SCRATCH RESULT</p>
-      <h2 id="result-heading"></h2>
-      <div class="result-prize" id="result-prize"></div>
-      <p class="description" id="result-description"></p>
-      <a id="rewards-link" class="primary-btn button-link" href="../My Rewards/index.html" hidden>View My Rewards →</a>
-      <p id="no-win-note" class="no-win-note" hidden>Come back on another restaurant visit for a new chance!</p>
-      <a href="../Dashboard/index.html" class="secondary-link">Back to Dashboard →</a>
-    </section>
-  </main>
-
-  <footer>© ChefDesk · Play, smile, repeat.</footer>
-  <script src="../shared/customer.js"></script>
-  <script src="script.js"></script>
 </body>
 </html>

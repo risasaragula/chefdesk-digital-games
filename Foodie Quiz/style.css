@@ -406,3 +406,30 @@ a:focus-visible {
     font-size: 60px;
   }
 }
+
+body{
+background-image:url("assets/bg.png")!important;
+background-position:center center!important;
+background-size:cover!important;
+background-repeat:no-repeat!important;
+background-attachment:scroll!important;
+}
+main{
+position:relative;
+z-index:1;
+}
+@media(max-width:768px){
+body{
+background-position:center top!important;
+background-size:cover!important;
+}
+main{
+width:100%;
+max-width:100%;
+}
+}
+@media(max-width:400px){
+body{
+background-position:48% top!important;
+}
+}

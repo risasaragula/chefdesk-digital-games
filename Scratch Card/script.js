@@ -1,326 +1,189 @@
 
-const checkinScreen = document.getElementById("checkin-screen");
-const scratchScreen = document.getElementById("scratch-screen");
-const resultScreen = document.getElementById("result-screen");
-const checkinForm = document.getElementById("checkin-form");
-const visitCodeInput = document.getElementById("visit-code");
-const checkinError = document.getElementById("checkin-error");
-const customerPhoneElement = document.getElementById("customer-phone");
-const card = document.getElementById("scratch-card");
-const canvas = document.getElementById("scratch-canvas");
-const context = canvas.getContext("2d");
-const hiddenPrize = document.getElementById("hidden-prize");
-const hiddenEmoji = document.getElementById("hidden-emoji");
-const progressText = document.getElementById("scratch-progress");
-const revealButton = document.getElementById("reveal-button");
-const resultEmoji = document.getElementById("result-emoji");
-const resultHeading = document.getElementById("result-heading");
-const resultPrize = document.getElementById("result-prize");
-const resultDescription = document.getElementById("result-description");
-const rewardsLink = document.getElementById("rewards-link");
-const noWinNote = document.getElementById("no-win-note");
-
-const STORAGE_KEY = "chefdesk_scratch_used_bills_v2";
-const WIN_PROBABILITY = 0.20;
-
-const outcomes = [
-  { prize: "FREE COFFEE", emoji: "☕" },
-  { prize: "10% OFF", emoji: "🎟️" },
-  { prize: "FREE DESSERT", emoji: "🍰" },
-  { prize: "TRY AGAIN", emoji: "🍀" },
-  { prize: "BONUS POINTS", emoji: "⭐" },
-  { prize: "FREE UPGRADE", emoji: "🎁" }
-];
-
-let customerPhone = "";
-let visitCode = "";
-let selectedOutcome = null;
-let drawing = false;
-let revealed = false;
-let lastPoint = null;
-let scratchMoves = 0;
-
-function getUsedVisits() {
-  try {
-    const saved = JSON.parse(
-      localStorage.getItem(STORAGE_KEY) || "[]"
-    );
-
-    return Array.isArray(saved) ? saved : [];
-  } catch (error) {
-    console.error("Unable to load used visits:", error);
-    return [];
-  }
-}
-
-function showScreen(screen) {
-  [checkinScreen, scratchScreen, resultScreen].forEach(item => {
-    item.hidden = item !== screen;
-  });
-}
-
-function normalizeVisitCode(code) {
-  return code.trim().toUpperCase();
-}
-
-function reserveVisit(code) {
-  const visits = getUsedVisits();
-
-  if (visits.includes(code)) {
-    return false;
-  }
-
-  visits.push(code);
-
-  try {
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify(visits)
-    );
-
-    return true;
-  } catch (error) {
-    console.error("Unable to save visit:", error);
-    return false;
-  }
-}
-
-async function initialize() {
-  try {
-    const customer = await ChefDesk.requireLogin();
-
-    customerPhone = customer.phone;
-    customerPhoneElement.textContent = customer.displayPhone;
-
-    showScreen(checkinScreen);
-  } catch (error) {
-    console.error("Unable to initialize Scratch & Win:", error);
-
-    checkinError.textContent =
-      "Unable to load your account. Please refresh and try again.";
-  }
-}
-
-checkinForm.addEventListener("submit", event => {
-  event.preventDefault();
-
-  checkinError.textContent = "";
-
-  const code = normalizeVisitCode(visitCodeInput.value);
-
-  if (code.length < 4) {
-    checkinError.textContent =
-      "Enter a visit code with at least 4 characters.";
-    return;
-  }
-
-  if (getUsedVisits().includes(code)) {
-    checkinError.textContent =
-      "This bill has already been used for Scratch & Win. " +
-      "Please use a new bill code on your next visit.";
-    return;
-  }
-
-  if (!reserveVisit(code)) {
-    checkinError.textContent =
-      "Unable to save your attempt. Please try again.";
-    return;
-  }
-
-  visitCode = code;
-  revealed = false;
-  drawing = false;
-  lastPoint = null;
-  scratchMoves = 0;
-
-  const isWinner = Math.random() < WIN_PROBABILITY;
-
-  if (isWinner) {
-    const winningOutcomes = outcomes.filter(
-      outcome => outcome.prize !== "TRY AGAIN"
-    );
-
-    selectedOutcome = winningOutcomes[
-      Math.floor(Math.random() * winningOutcomes.length)
-    ];
-  } else {
-    selectedOutcome = outcomes.find(
-      outcome => outcome.prize === "TRY AGAIN"
-    );
-  }
-
-  hiddenPrize.textContent = selectedOutcome.prize;
-  hiddenEmoji.textContent = selectedOutcome.emoji;
-
-  progressText.textContent = "Scratched: 0%";
-  canvas.style.display = "";
-
-  showScreen(scratchScreen);
-  requestAnimationFrame(prepareCanvas);
+const rewards=[{name:"FREE COFFEE",icon:"☕"},{name:"10% OFF",icon:"🏷️"},{name:"FREE DESSERT",icon:"🍰"},{name:"BONUS POINTS",icon:"🪙"},{name:"FREE UPGRADE",icon:"👑"},{name:"TRY AGAIN",icon:"🍀"}];
+const STORAGE_KEY="chefdesk_scratch_used_bills_v2",WIN_PROBABILITY=.20;
+const canvas=document.getElementById("scratchCanvas"),ctx=canvas.getContext("2d",{willReadFrequently:true}),frame=document.querySelector(".scratch-frame"),prizeIcon=document.getElementById("prizeIcon"),prizeName=document.getElementById("prizeName"),prizeDescription=document.getElementById("prizeDescription"),progressFill=document.getElementById("progressFill"),progressPercent=document.getElementById("progressPercent"),progressText=document.getElementById("progressText"),revealBtn=document.getElementById("revealBtn"),finishedActions=document.getElementById("finishedActions"),winMessage=document.getElementById("winMessage"),playAgainBtn=document.getElementById("playAgainBtn");
+let visitCode="",scratching=false,completed=false,lastPoint=null,scratches=0,currentReward=null,unlocked=false;
+function usedVisits(){try{const v=JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");return Array.isArray(v)?v:[]}catch{return[]}}
+function reserveVisit(code){const visits=usedVisits();if(visits.includes(code))return false;try{localStorage.setItem(STORAGE_KEY,JSON.stringify([...visits,code]));return true}catch{return false}}
+function createGate(){
+const gate=document.createElement("section");
+gate.id="visitGate";
+gate.innerHTML='<div class="visit-gate-card"><div style="font-size:36px">🎟️</div><h2>Unlock your scratch card</h2><p>Enter the visit code from your restaurant bill to play. Login is required only if you win and want to claim your reward.</p><form id="visitForm"><label for="billCode">Visit code</label><input id="billCode" required maxlength="40" placeholder="Example: BILL1001" autocomplete="off"><button type="submit">Unlock My Card →</button></form><p id="visitError" role="alert"></p><p>One scratch card per bill code in this demo.</p></div>';
+const style=document.createElement("style");
+style.textContent='.visit-gate-card{max-width:470px;margin:24px auto;padding:27px 24px;background:#fffdf8;border:1px solid #e9d9c8;border-radius:24px;text-align:center;box-shadow:0 12px 34px #8c5b3029;color:#30281e}.visit-gate-card h2{font-size:26px;margin:12px 0}.visit-gate-card p{margin:12px 0;color:#70645b;font-size:14px;line-height:1.5}.visit-gate-card form{display:grid;gap:9px;text-align:left;margin-top:18px}.visit-gate-card label{font-weight:700;font-size:13px}.visit-gate-card input{min-height:47px;padding:12px;border:1px solid #dcc8af;border-radius:10px;font:inherit}.visit-gate-card button{min-height:46px;border:0;border-radius:10px;background:#e94c13;color:#fff;font:inherit;font-weight:800;cursor:pointer}.visit-gate-card #visitError{color:#bc3023;font-weight:700}#visitGate[hidden],.scratch-card[hidden]{display:none!important}@media(max-width:600px){.visit-gate-card{padding:20px 15px;margin:15px auto}}';
+document.head.appendChild(style);
+document.querySelector(".scratch-card").before(gate);
+document.querySelector(".scratch-card").hidden=true;
+document.getElementById("visitForm").addEventListener("submit",e=>{
+e.preventDefault();
+const code=document.getElementById("billCode").value.trim().toUpperCase(),error=document.getElementById("visitError");
+error.textContent="";
+if(code.length<4){error.textContent="Enter a valid visit code (at least 4 characters).";return}
+if(usedVisits().includes(code)){error.textContent="This bill was already used for Scratch & Win. Use a new bill next visit.";return}
+if(!reserveVisit(code)){error.textContent="Unable to save this attempt. Please try again.";return}
+visitCode=code;
+unlocked=true;
+gate.hidden=true;
+document.querySelector(".scratch-card").hidden=false;
+document.querySelector(".gift-icon").hidden=false;
+const v=document.querySelector(".instructions");
+if(v)v.hidden=false;
+const h=document.querySelector(".scratch-card h2");
+if(h)h.hidden=false;
+document.querySelector(".progress-row").hidden=false;
+progressText.hidden=false;
+revealBtn.hidden=false;
+resetCard();
 });
-
-function prepareCanvas() {
-  const bounds = card.getBoundingClientRect();
-  const dpr = window.devicePixelRatio || 1;
-
-  canvas.width = Math.round(bounds.width * dpr);
-  canvas.height = Math.round(bounds.height * dpr);
-
-  context.setTransform(dpr, 0, 0, dpr, 0, 0);
-  context.globalCompositeOperation = "source-over";
-
-  const gradient = context.createLinearGradient(
-    0,
-    0,
-    bounds.width,
-    bounds.height
-  );
-
-  gradient.addColorStop(0, "#a9b4b4");
-  gradient.addColorStop(0.5, "#e0e5e4");
-  gradient.addColorStop(1, "#9da9a9");
-
-  context.fillStyle = gradient;
-  context.fillRect(0, 0, bounds.width, bounds.height);
-
-  context.fillStyle = "#365447";
-  context.font = "bold 20px Arial";
-  context.textAlign = "center";
-  context.textBaseline = "middle";
-
-  context.fillText(
-    "SCRATCH HERE ✨",
-    bounds.width / 2,
-    bounds.height / 2
-  );
-
-  context.globalCompositeOperation = "destination-out";
 }
-
-function getPoint(event) {
-  const rect = canvas.getBoundingClientRect();
-
-  return {
-    x: event.clientX - rect.left,
-    y: event.clientY - rect.top
-  };
+function setProgress(value){
+const p=Math.min(100,Math.max(0,Math.round(value)));
+progressFill.style.width=p+"%";
+progressPercent.textContent=p+"%";
+progressText.textContent="Scratched: "+p+"%";
 }
-
-function scratchLine(from, to) {
-  context.beginPath();
-  context.lineWidth = 36;
-  context.lineCap = "round";
-  context.lineJoin = "round";
-  context.moveTo(from.x, from.y);
-  context.lineTo(to.x, to.y);
-  context.stroke();
+function prepareReward(){
+currentReward=Math.random()<WIN_PROBABILITY?rewards[Math.floor(Math.random()*5)]:rewards[5];
+prizeIcon.textContent=currentReward.icon;
+prizeName.textContent=currentReward.name;
+prizeDescription.textContent=currentReward.name==="TRY AGAIN"?"Better luck next visit!":"A delicious surprise for you!";
 }
-
-canvas.addEventListener("pointerdown", event => {
-  if (revealed || !selectedOutcome) {
-    return;
-  }
-
-  drawing = true;
-  lastPoint = getPoint(event);
-
-  canvas.setPointerCapture(event.pointerId);
-  scratchLine(lastPoint, lastPoint);
+function drawSilver(){
+const w=canvas.width,h=canvas.height;
+ctx.globalCompositeOperation="source-over";
+ctx.clearRect(0,0,w,h);
+const gradient=ctx.createLinearGradient(0,0,w,h);
+gradient.addColorStop(0,"#9ea2a5");
+gradient.addColorStop(.2,"#e4e5e6");
+gradient.addColorStop(.48,"#b0b4b7");
+gradient.addColorStop(.7,"#f1f2f2");
+gradient.addColorStop(1,"#90969b");
+ctx.fillStyle=gradient;
+ctx.fillRect(0,0,w,h);
+ctx.textAlign="center";
+ctx.textBaseline="middle";
+ctx.fillStyle="#676d72";
+ctx.font=`800 ${Math.max(16,w*.052)}px Arial`;
+ctx.fillText("SCRATCH HERE ✨",w/2,h/2);
+}
+function setupCanvas(){
+const rect=canvas.getBoundingClientRect(),dpr=Math.min(window.devicePixelRatio||1,2);
+canvas.width=Math.max(1,Math.round(rect.width*dpr));
+canvas.height=Math.max(1,Math.round(rect.height*dpr));
+drawSilver();
+}
+function getPoint(e){
+const r=canvas.getBoundingClientRect();
+return{x:(e.clientX-r.left)*canvas.width/r.width,y:(e.clientY-r.top)*canvas.height/r.height};
+}
+function erase(a,b){
+const brush=Math.max(24,canvas.width*.09);
+ctx.globalCompositeOperation="destination-out";
+ctx.lineWidth=brush;
+ctx.lineCap="round";
+ctx.lineJoin="round";
+ctx.beginPath();
+ctx.moveTo(a.x,a.y);
+ctx.lineTo(b.x,b.y);
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(b.x,b.y,brush/2,0,2*Math.PI);
+ctx.fill();
+ctx.globalCompositeOperation="source-over";
+}
+function scratchedPercent(){
+const w=canvas.width,h=canvas.height,p=ctx.getImageData(0,0,w,h).data;
+let clear=0,total=0;
+for(let y=0;y<h;y+=12){
+for(let x=0;x<w;x+=12){
+if(p[(y*w+x)*4+3]<128)clear++;
+total++;
+}
+}
+return total?clear/total*100:0;
+}
+function finish(){
+if(completed||!unlocked)return;
+completed=true;
+scratching=false;
+canvas.style.transition="opacity .5s ease";
+canvas.style.opacity="0";
+canvas.style.pointerEvents="none";
+setProgress(100);
+revealBtn.hidden=true;
+finishedActions.hidden=false;
+const won=currentReward.name!=="TRY AGAIN";
+winMessage.textContent=won?"You found: "+currentReward.name+"!":"Better luck next visit!";
+if(won){
+winMessage.textContent="You won! Sign in to claim your demo reward.";
+ChefDeskPrizeClaim.offerClaim("Scratch & Win",currentReward.name,visitCode,winMessage,finishedActions);
+}
+playAgainBtn.textContent="Back to Dashboard";
+playAgainBtn.onclick=()=>{location.href="../Dashboard/index.html"};
+}
+function startScratch(e){
+if(completed||!unlocked||e.button!==undefined&&e.button!==0)return;
+scratching=true;
+lastPoint=getPoint(e);
+scratches++;
+canvas.setPointerCapture(e.pointerId);
+erase(lastPoint,lastPoint);
+e.preventDefault();
+}
+function moveScratch(e){
+if(!scratching||completed)return;
+const point=getPoint(e);
+erase(lastPoint,point);
+lastPoint=point;
+scratches++;
+if(scratches%5===0){
+const percent=scratchedPercent();
+setProgress(percent);
+if(percent>=40)finish();
+}
+e.preventDefault();
+}
+function stopScratch(){
+if(!scratching)return;
+scratching=false;
+lastPoint=null;
+if(!completed){
+const percent=scratchedPercent();
+setProgress(percent);
+if(percent>=40)finish();
+}
+}
+function resetCard(){
+completed=false;
+scratching=false;
+scratches=0;
+lastPoint=null;
+canvas.style.transition="none";
+canvas.style.opacity="1";
+canvas.style.pointerEvents="auto";
+revealBtn.hidden=false;
+finishedActions.hidden=true;
+setProgress(0);
+prepareReward();
+requestAnimationFrame(setupCanvas);
+}
+canvas.addEventListener("pointerdown",startScratch);
+canvas.addEventListener("pointermove",moveScratch);
+canvas.addEventListener("pointerup",stopScratch);
+canvas.addEventListener("pointercancel",stopScratch);
+canvas.addEventListener("lostpointercapture",stopScratch);
+revealBtn.addEventListener("click",finish);
+let resizeTimer;
+window.addEventListener("resize",()=>{
+clearTimeout(resizeTimer);
+resizeTimer=setTimeout(()=>{
+if(unlocked&&!completed){
+scratching=false;
+lastPoint=null;
+setProgress(0);
+setupCanvas();
+}
+},200);
 });
-
-canvas.addEventListener("pointermove", event => {
-  if (!drawing || revealed) {
-    return;
-  }
-
-  const nextPoint = getPoint(event);
-
-  scratchLine(lastPoint, nextPoint);
-  lastPoint = nextPoint;
-  scratchMoves++;
-
-  if (scratchMoves % 8 === 0) {
-    checkScratchProgress();
-  }
-});
-
-function stopDrawing() {
-  drawing = false;
-  lastPoint = null;
-}
-
-canvas.addEventListener("pointerup", stopDrawing);
-canvas.addEventListener("pointercancel", stopDrawing);
-
-function checkScratchProgress() {
-  const { width, height } = canvas;
-
-  const pixels = context.getImageData(
-    0,
-    0,
-    width,
-    height
-  ).data;
-
-  let cleared = 0;
-  let sampled = 0;
-
-  for (let i = 3; i < pixels.length; i += 80) {
-    sampled++;
-
-    if (pixels[i] < 100) {
-      cleared++;
-    }
-  }
-
-  const percentage = sampled > 0
-    ? (cleared / sampled) * 100
-    : 0;
-
-  progressText.textContent =
-    `Scratched: ${Math.min(100, Math.round(percentage))}%`;
-
-  if (percentage >= 40) {
-    revealResult();
-  }
-}
-
-revealButton.addEventListener("click", revealResult);
-
-function revealResult() {
-  if (revealed || !selectedOutcome) {
-    return;
-  }
-
-  revealed = true;
-  drawing = false;
-  canvas.style.display = "none";
-
-  const won = selectedOutcome.prize !== "TRY AGAIN";
-
-  if (won) {
-    ChefDesk.addDemoReward(
-      "Scratch & Win",
-      selectedOutcome.prize,
-      visitCode
-    );
-  }
-
-  resultEmoji.textContent = selectedOutcome.emoji;
-  resultPrize.textContent = selectedOutcome.prize;
-
-  resultHeading.textContent = won
-    ? "Congratulations!"
-    : "Better luck next time!";
-
-  resultDescription.textContent = won
-    ? "Your demo reward has been added automatically to My Rewards. This is not a redeemable coupon."
-    : "No reward this time. Your next restaurant visit brings another chance.";
-
-  rewardsLink.hidden = !won;
-  noWinNote.hidden = won;
-
-  showScreen(resultScreen);
-}
-
-initialize();
+createGate();
+ChefDeskPrizeClaim.restorePendingClaim();

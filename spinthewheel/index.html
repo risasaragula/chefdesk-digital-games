@@ -1,98 +1,62 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ChefDesk | Spin & Win</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="../shared/customer.css">
-  <link rel="stylesheet" href="../shared/game-ui.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#fff7ef">
+<title>Spin & Win | ChefDesk</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../shared/customer.css">
 </head>
-
 <body>
-  <header class="header">
-    <a class="logo" href="../Dashboard/index.html">ChefDesk<span>.</span></a>
-    <a class="back-link" href="../Dashboard/index.html">← Dashboard</a>
-  </header>
+<header class="navbar">
+<a href="../Dashboard/index.html" class="logo">ChefDesk<span>.</span></a>
+<a href="../Dashboard/index.html" class="back-btn">← Dashboard</a>
+</header>
+<main class="game-page">
+<div class="decoration decoration-one">🍝</div>
+<div class="decoration decoration-two">🍹</div>
+<div class="decoration decoration-three">🍰</div>
+<div class="decoration decoration-four">🌿</div>
+<div class="game-heading">
+<p class="eyebrow">CHEFDESK REWARDS</p>
+<h1>Spin & <span>Win!</span></h1>
+<p>Good food deserves a little surprise.</p>
+</div>
+<div class="game-layout">
+<section class="wheel-section" aria-label="Spin the reward wheel">
+<div class="wheel-container">
+<div class="wheel-pointer"></div>
+<div class="wheel-rotator" id="wheelRotator">
+<canvas id="wheelCanvas" width="700" height="700"></canvas>
+</div>
+<button id="spinBtn" class="spin-button" type="button">SPIN</button>
+</div>
+<div class="wheel-stand"></div>
+<div class="spin-note">🎁 One spin per bill. Good luck!</div>
+<div id="status" class="status" role="status" aria-live="polite">Tap SPIN to discover your surprise!</div>
+</section>
+<aside class="rewards-panel">
+<h2><span>🎁</span> Today's Rewards</h2>
+<div id="rewardsList" class="rewards-list"></div>
+<p class="panel-note">Rewards shown are for the game preview.</p>
+</aside>
+</div>
+</main>
+<div id="resultOverlay" class="result-overlay" hidden>
+<div class="result-card" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+<div class="result-icon" id="resultIcon">🎉</div>
+<p class="result-label">YOUR SPIN RESULT</p>
+<h2 id="resultTitle">Congratulations!</h2>
+<p id="resultMessage"></p>
+<button id="closeResult" type="button">Continue Playing</button>
+</div>
+</div>
 
-  <main class="main">
-    <p class="eyebrow">CHEFDESK REWARDS</p>
-    <h1>Spin & <em>Win.</em></h1>
-    <p class="subtitle">Good food deserves a little surprise.</p>
-    <section id="checkin-screen" class="checkin-card">
-      <p class="step-label">STEP 01 · YOUR VISIT</p>
-      <div class="checkin-icon">🎟️</div>
-      <h2>Unlock your spin!</h2>
-      <p class="card-description">Welcome back! Enter the visit code from your restaurant bill or order.</p>
-      <p class="customer-info">Playing as <strong id="logged-in-phone"></strong></p>
-      <form id="checkin-form">
-        <label for="visit-code">Visit code</label>
-        <input
-          id="visit-code"
-          class="text-input"
-          type="text"
-          placeholder="Example: BILL1001"
-          maxlength="40"
-          required
-        >
-        <button type="submit" class="primary-btn"> Unlock My Spin →</button>
-      </form>
-      <p id="checkin-error" class="error-message" role="alert"></p>
-    </section>
+<script src="../shared/customer.js"></script>
+<script src="../shared/claim-reward.js"></script>
+<script src="script.js"></script>
 
-    <section id="game-screen" hidden>
-      <div class="wheel-wrapper">
-        <div class="wheel-pointer"></div>
-        <div class="wheel" id="wheel">
-          <div class="wheel-label label-1">
-            <span>FREE<br>COFFEE</span>
-          </div>
-          <div class="wheel-label label-2">
-            <span>10%<br>OFF</span>
-          </div>
-          <div class="wheel-label label-3">
-            <span>FREE<br>DESSERT</span>
-          </div>
-          <div class="wheel-label label-4">
-            <span>TRY<br>AGAIN</span>
-          </div>
-          <div class="wheel-label label-5">
-            <span>BONUS<br>POINTS</span>
-          </div>
-          <div class="wheel-label label-6">
-            <span>FREE<br>UPGRADE</span>
-          </div>
-        </div>
-        <button
-          id="spin-button"
-          class="spin-button"
-          type="button">SPIN</button>
-      </div>
-
-      <p id="spin-hint" class="spin-hint">Tap SPIN to reveal your surprise!</p>
-    </section>
-
-    <section id="result-screen" hidden>
-      <div class="result-card">
-        <div id="result-icon" class="result-icon">🎉</div>
-        <p class="step-label">YOUR SPIN RESULT</p>
-        <h2 id="result-heading"></h2>
-        <div id="prize-name" class="prize-name"></div>
-        <p id="result-description" class="card-description"></p>
-        <div id="winner-actions" hidden>
-          <a class="primary-btn link-btn" href="../My Rewards/index.html"> View My Rewards →</a>
-        </div>
-
-        <div id="loser-actions" hidden>
-          <div class="next-visit-note">Come back for another verified visit to unlock your next spin!</div>
-        </div>
-        <a class="secondary-link" href="../Dashboard/index.html">Back to Dashboard →</a>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">Made for good food and great moments.<br> © ChefDesk</footer>
-  <script src="../shared/customer.js"></script>
-  <script src="script.js"></script>
 </body>
 </html>
